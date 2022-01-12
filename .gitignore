@@ -9,3 +9,10 @@ Anchor.toml
 *.pem*
 *.csv*
 *keypair.json*
+
+**/*~
+DEADJOE
+nohup.*
+local*ledger*
+validator.log
+yarn*.log
