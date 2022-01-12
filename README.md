@@ -13,7 +13,7 @@ A heads or tails (cross and pile) on Solana. It's meant to serve as an example o
     1. Install: https://github.com/evanmarshall/solrand
     1. Run `anchor build && anchor deploy`
 3. Run `anchor build && anchor deploy`
-4. Use the Program Id found from the deploy. Replace `6urrPCjcrQ1xaxbAJGMTtvZfA9wbMqQbEArKnVUHhYTs` with your new Program Id.
+4. Use the Program Id found from the deploy. Replace `6urrPCjcrQ1xaxbAJGMTtvZfA9wbMqQbEArKnVUHhYTs` and `6t7fjmgyNdoMJMftaZin9w2n6YGSB8tHbFvu22bqh1EY` with your new Program Id.
 5. Run the tests: `anchor test --skip-local-validator`
 
 # Troubleshooting

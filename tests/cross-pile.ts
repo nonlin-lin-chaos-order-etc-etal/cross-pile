@@ -1,13 +1,22 @@
 import * as anchor from '@project-serum/anchor';
 import { Program } from '@project-serum/anchor';
-import { MockOracleSession, SOLRAND_IDL, PROGRAM_ID } from '@demox-labs/solrand';
+import { IDL as SOLRAND_IDL } from '../../solrandhypn/target/types/solrandhypn';
+import { MockOracleSession } from "../../solrandhypn/app/sessions.js";
 import { CrossPile } from '../target/types/cross_pile';
 import { randomBytes } from 'crypto';
 import { assert } from "chai";
 
+const PROGRAM_ID = 'CrkGQLM8mnWxUV2bGXacvFtnk3oVyeP6grRyFgu6XJ9G';
+
 describe('cross-pile', () => {
+    const trace = (m) => {
+       console.log("TRACE:", m);
+    };
+    trace("point1");
     const ENV = 'http://localhost:8899';
+    trace("point2");
     const solrandId = new anchor.web3.PublicKey(PROGRAM_ID);
+    trace(`point3: 'PROGRAM_ID'=='${PROGRAM_ID}'`);
 
     function createProvider(keyPair) {
         let solConnection = new anchor.web3.Connection(ENV);
@@ -27,15 +36,21 @@ describe('cross-pile', () => {
     const oracle = anchor.web3.Keypair.generate();
     const oracleSession = new MockOracleSession(oracle, SOLRAND_IDL, solrandId, ENV);
 
+    trace(`point b.2 user key pair`);
     let provider = createProvider(userKeyPair);
+    trace(`point b.3 user 2 key pair`);
     let provider2 = createProvider(user2KeyPair);
+    trace(`point b.4`);
 
     const program = anchor.workspace.CrossPile as Program<CrossPile>;
+    trace(`crosspile program id: '${program.programId}'`)
     const userProgram = new anchor.Program(program.idl, program.programId, provider);
     const user2Program = new anchor.Program(program.idl, program.programId, provider2);
 
     const oraclePubkey = oracle.publicKey;
     const solrandProgram = new anchor.Program(SOLRAND_IDL, solrandId, provider);
+    trace(`solrand program id: '${solrandProgram.programId}'`)
+
     const amount = new anchor.BN(100000000);
     const airdropAmount = 10000000000; // Should be more than betting amount
     let reqAccount, reqBump;
@@ -44,6 +59,8 @@ describe('cross-pile', () => {
     let vaultAccount, vaultBump;
 
     anchor.setProvider(provider);
+    
+    trace(`point: unit tests begin...`);
 
     it('Set up tests', async () => {
         console.log('User Pubkey: ', userKeyPair.publicKey.toString());
@@ -68,11 +85,14 @@ describe('cross-pile', () => {
             [Buffer.from("r-seed"), userKeyPair.publicKey.toBuffer()],
             solrandId
             );
+        trace(`r-seed reqAcct='${reqAccount}'`);
 
         [reqVaultAccount, reqVaultBump] = await anchor.web3.PublicKey.findProgramAddress(
             [Buffer.from("v-seed"), userKeyPair.publicKey.toBuffer()],
             solrandId,
             );
+        trace(`v-seed reqVaultAcct='${reqVaultAccount}'`);
+
 
         await solrandProgram.rpc.initialize(
             reqBump,
@@ -92,15 +112,18 @@ describe('cross-pile', () => {
     });
 
     it('Create a coin!', async () => {
+        trace(`point cc0`);
         [coinAccount, coinBump] = await anchor.web3.PublicKey.findProgramAddress(
             [Buffer.from("coin-seed"), userKeyPair.publicKey.toBuffer()],
             program.programId
             );
+        trace(`point cc1 ${coinAccount}`);
 
         [vaultAccount, vaultBump] = await anchor.web3.PublicKey.findProgramAddress(
             [Buffer.from("vault-seed"), userKeyPair.publicKey.toBuffer()],
             program.programId
             );
+        trace(`point cc2 ${vaultAccount}`);
 
         console.log('Coin account: ', coinAccount.toString());
         console.log('Req account: ', reqAccount.toString());
@@ -129,6 +152,8 @@ describe('cross-pile', () => {
         );
 
         let userBalance = await getBalance(provider, userKeyPair.publicKey);
+        
+        trace(`cc pint assert balance #1`)
         assert(userBalance < airdropAmount);
 
         console.log('User Balance: ', userBalance);

@@ -1,12 +1,16 @@
 [programs.localnet]
-cross_pile = "6urrPCjcrQ1xaxbAJGMTtvZfA9wbMqQbEArKnVUHhYTs"
+# cross_pile = "6urrPCjcrQ1xaxbAJGMTtvZfA9wbMqQbEArKnVUHhYTs"
+cross_pile = "6t7fjmgyNdoMJMftaZin9w2n6YGSB8tHbFvu22bqh1EY"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
-[provider]
-cluster = "localnet"
-wallet = <Your Key Path Here>
-
 [scripts]
-test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+test = "yarn run ts-mocha ./tsconfig.json -t 1000000 tests/**/*.ts"
+apid = "echo -n 'crosspile api daemon starting... not yet implemented... ' && echo 'daemon quit.'"
+
+[provider]
+# cluster = "devnet"
+cluster = "localnet"
+wallet = "~/wallet.json"
+

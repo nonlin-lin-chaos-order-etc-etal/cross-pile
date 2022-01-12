@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use std::mem::size_of;
 
-declare_id!("6urrPCjcrQ1xaxbAJGMTtvZfA9wbMqQbEArKnVUHhYTs");
+declare_id!("6t7fjmgyNdoMJMftaZin9w2n6YGSB8tHbFvu22bqh1EY");
 
 /**
  * The Cross And Pile Program (P2P Heads or Tails)
@@ -54,7 +54,7 @@ pub mod cross_pile {
         }
 
         // Transfer authority for the oracle requester to the Coin PDA
-        let cpi_accounts = solrand::cpi::accounts::TransferAuthority {
+        let cpi_accounts = solrandhypn::cpi::accounts::TransferAuthority {
             requester: ctx.accounts.requester.to_account_info(),
             authority: ctx.accounts.initiator.to_account_info(),
             new_authority: ctx.accounts.coin.to_account_info(),
@@ -66,7 +66,7 @@ pub mod cross_pile {
             cpi_accounts
         );
 
-        solrand::cpi::transfer_authority(cpi_context)?;
+        solrandhypn::cpi::transfer_authority(cpi_context)?;
 
         // Transfer sol from Initiator to Vault PDA
         let ix = anchor_lang::solana_program::system_instruction::transfer(
@@ -112,7 +112,7 @@ pub mod cross_pile {
         // Use Coin PDA to Request Random From Oracle
         let coin_acc = &ctx.remaining_accounts[0];
 
-        let cpi_accounts = solrand::cpi::accounts::RequestRandom {
+        let cpi_accounts = solrandhypn::cpi::accounts::RequestRandom {
             requester: ctx.accounts.requester.to_account_info(),
             vault: ctx.accounts.oracle_vault.clone(),
             authority: coin_acc.to_account_info(),
@@ -139,7 +139,7 @@ pub mod cross_pile {
             signer
         );
 
-        solrand::cpi::request_random(cpi_context)?;
+        solrandhypn::cpi::request_random(cpi_context)?;
 
         Ok(())
     }
@@ -156,7 +156,7 @@ pub mod cross_pile {
         }
         // Determine winner from random number & transfer prize
         {
-            let requester_loader: AccountLoader<solrand::Requester> = AccountLoader::try_from_unchecked(ctx.program_id, &ctx.accounts.requester).unwrap();
+            let requester_loader: AccountLoader<solrandhypn::Requester> = AccountLoader::try_from_unchecked(ctx.program_id, &ctx.accounts.requester).unwrap();
             let requester = requester_loader.load()?;
             let mut winner = ctx.accounts.initiator.clone();
 
@@ -177,7 +177,7 @@ pub mod cross_pile {
         // Transfer back ownership of requester
         let coin_acc = &ctx.remaining_accounts[0];
 
-        let cpi_accounts = solrand::cpi::accounts::TransferAuthority {
+        let cpi_accounts = solrandhypn::cpi::accounts::TransferAuthority {
             requester: ctx.accounts.requester.to_account_info(),
             authority: coin_acc.to_account_info(),
             new_authority: ctx.accounts.initiator.to_account_info(),
@@ -203,7 +203,7 @@ pub mod cross_pile {
             signer
         );
 
-        solrand::cpi::transfer_authority(cpi_context)?;
+        solrandhypn::cpi::transfer_authority(cpi_context)?;
 
         return Ok(());
     }
