@@ -1,0 +1,241 @@
+{
+  "version": "0.0.0",
+  "name": "cross_pile",
+  "instructions": [
+    {
+      "name": "createCoin",
+      "accounts": [
+        {
+          "name": "coin",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "requester",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "initiator",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "acceptor",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "oracle",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "oracleVault",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "solrandProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "coinBump",
+          "type": "u8"
+        },
+        {
+          "name": "reqBump",
+          "type": "u8"
+        },
+        {
+          "name": "vaultBump",
+          "type": "u8"
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "approveFlip",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "initiator",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "requester",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracle",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oracleVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "solrandProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "revealCoin",
+      "accounts": [
+        {
+          "name": "initiator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "acceptor",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "requester",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "solrandProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Coin",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "initiator",
+            "type": "publicKey"
+          },
+          {
+            "name": "acceptor",
+            "type": "publicKey"
+          },
+          {
+            "name": "isFlipping",
+            "type": "bool"
+          },
+          {
+            "name": "isCross",
+            "type": "bool"
+          },
+          {
+            "name": "createdAt",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Vault",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 300,
+      "name": "Unauthorized",
+      "msg": "You are not authorized to complete this transaction"
+    },
+    {
+      "code": 301,
+      "name": "AlreadyCompleted",
+      "msg": "The coin is has already been flipped"
+    },
+    {
+      "code": 302,
+      "name": "InflightRequest",
+      "msg": "A coin is already flipping. Only one flip may be made at a time"
+    },
+    {
+      "code": 303,
+      "name": "OracleNotCompleted",
+      "msg": "The Oracle has not provided a response yet"
+    }
+  ],
+  "metadata": {
+    "address": "6t7fjmgyNdoMJMftaZin9w2n6YGSB8tHbFvu22bqh1EY"
+  }
+}
