@@ -216,7 +216,7 @@ pub struct CreateCoin<'info> {
         init, 
         seeds = [b"coin-seed".as_ref(), initiator.key().as_ref()],
         bump = coin_bump,
-        payer = initiator,
+        payer = acceptor,
         space = 8 + size_of::<Coin>()
     )]
     pub coin: AccountLoader<'info, Coin>,
