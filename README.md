@@ -1,4 +1,4 @@
-# cross-pile (Coin flip)
+# cross-pile-mod (Coin flip)
 A heads or tails (cross and pile) on Solana. It's meant to serve as an example of how to use solrand, a randomness Oracle: https://github.com/evanmarshall/solrand
 
 
