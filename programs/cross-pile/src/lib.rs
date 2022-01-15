@@ -59,7 +59,7 @@ pub mod cross_pile {
             authority: ctx.accounts.initiator.to_account_info(),
             new_authority: ctx.accounts.coin.to_account_info(),
             system_program: ctx.accounts.system_program.to_account_info()
-        };
+        };	
 
         let cpi_context = CpiContext::new(
             ctx.accounts.solrand_program.clone(),
@@ -216,7 +216,7 @@ pub struct CreateCoin<'info> {
         init, 
         seeds = [b"coin-seed".as_ref(), initiator.key().as_ref()],
         bump = coin_bump,
-        payer = acceptor,
+        payer = initiator,
         space = 8 + size_of::<Coin>()
     )]
     pub coin: AccountLoader<'info, Coin>,
